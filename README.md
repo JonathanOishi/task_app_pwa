@@ -24,11 +24,6 @@ Este é um aplicativo de tarefas moderno, feito com React + Vite e integrado ao 
    npm run dev
    ```
 
-## Construído com
+<img src="https://i.ibb.co/hFGPHvGC/demo.png" alt="Task App PWA Demo" style="max-width:350px; width:100%; border-radius:16px; box-shadow:0 4px 24px rgba(0,0,0,0.08); margin:24px auto; display:block;" />
 
-- [React](https://reactjs.org/)
-- [Vite](https://vitejs.dev/)
-- [Firebase](https://firebase.google.com/)
-- [React Router](https://reactrouter.com/)
-- [Tailwind CSS](https://tailwindcss.com/)
 
