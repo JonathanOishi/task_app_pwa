@@ -1,48 +1,28 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { register } from "../services/firebase";
 import "./login.css";
-import { auth } from "../services/firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 
-function Register({ onRegisterSuccess, onBackToLogin }) {
+function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
-        setSuccess("");
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
-            setSuccess("Conta criada com sucesso!");
-            setEmail("");
-            setPassword("");
-            if (onRegisterSuccess) onRegisterSuccess();
+            await register(email, password);
+            navigate("/"); // Vai para Home após cadastro
         } catch (err) {
-            setError(err.message);
+            setError("Erro ao criar conta.");
         }
     };
 
     return (
         <div className="login-container">
-            <button
-                style={{
-                    background: 'none',
-                    border: 'none',
-                    color: '#111',
-                    fontSize: 18,
-                    cursor: 'pointer',
-                    alignSelf: 'flex-start',
-                    marginBottom: 12,
-                    fontWeight: 700
-                }}
-                onClick={onBackToLogin}
-                title="Voltar para login"
-            >
-                ← Voltar
-            </button>
-            <h2>Criar Conta</h2>
+            <h2>Cadastro</h2>
             <form onSubmit={handleSubmit} className="login-form">
                 <input
                     type="email"
@@ -58,10 +38,18 @@ function Register({ onRegisterSuccess, onBackToLogin }) {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
-                <button type="submit">Cadastrar</button>
+                <button type="submit">Criar Conta</button>
                 {error && <p className="error">{error}</p>}
-                {success && <p style={{ color: '#388e3c', textAlign: 'center' }}>{success}</p>}
             </form>
+            <p style={{ marginTop: 16, textAlign: 'center' }}>
+                Já tem uma conta?{' '}
+                <span
+                    style={{ color: '#646cff', cursor: 'pointer', textDecoration: 'underline' }}
+                    onClick={() => navigate("/login")}
+                >
+                    Fazer login
+                </span>
+            </p>
         </div>
     );
 }

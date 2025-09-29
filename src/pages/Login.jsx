@@ -1,36 +1,26 @@
-
 import React, { useState } from "react";
-import Register from "./Register";
-import Home from "./Home";
+import { useNavigate } from "react-router-dom";
 import "./login.css";
 import { auth } from "../services/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 function Login() {
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const [showRegister, setShowRegister] = useState(false);
-    const [showHome, setShowHome] = useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
         try {
             await signInWithEmailAndPassword(auth, email, password);
-            setShowHome(true);
+            navigate("/"); // Vai para Home após login
         } catch (err) {
             setError("E-mail ou senha inválidos.");
         }
     };
 
-    if (showHome) {
-        return <Home onLogout={() => setShowHome(false)} />;
-    }
-    if (showRegister) {
-        return <Register onRegisterSuccess={() => setShowHome(true)} onBackToLogin={() => setShowRegister(false)} />;
-    }
     return (
         <div className="login-container">
             <h2>Login</h2>
@@ -56,7 +46,7 @@ function Login() {
                 Não tem uma conta?{' '}
                 <span
                     style={{ color: '#646cff', cursor: 'pointer', textDecoration: 'underline' }}
-                    onClick={() => setShowRegister(true)}
+                    onClick={() => navigate("/register")}
                 >
                     Criar conta
                 </span>

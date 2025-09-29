@@ -1,63 +1,86 @@
 import React, { useState, useEffect } from "react";
-import "./login.css";
-import app, { analytics, auth } from "../services/firebase";
-import { signOut } from "firebase/auth";
+import { saveTask, getAllTasks, syncTasks } from "../services/taskService";
+import { logout, auth } from "../services/firebase";
+import "./Login.css";
+import { useNavigate } from "react-router-dom";
 
-function Home({ onLogout }) {
-    useEffect(() => {
-        // Exibe informações do app e analytics no console
-        if (app) {
-            console.log("Firebase App Name:", app.name);
-            console.log("Firebase App Config:", app.options);
-        }
-        if (analytics) {
-            console.log("Firebase Analytics está inicializado.");
-        } else {
-            console.log("Firebase Analytics NÃO está inicializado.");
-        }
-    }, []);
+function Home({ onLogout, onGoToProfile }) {
     const [tasks, setTasks] = useState([]);
     const [title, setTitle] = useState("");
     const [time, setTime] = useState("");
     const [urgency, setUrgency] = useState("normal");
+    const navigate = useNavigate();
 
-    const handleAddTask = (e) => {
+    useEffect(() => {
+        async function fetchTasks() {
+            const allTasks = await getAllTasks();
+            const userId = auth.currentUser?.uid;
+            setTasks(allTasks.filter(task => task.user === userId));
+        }
+        fetchTasks();
+
+        const syncAndReload = async () => {
+            await syncTasks();
+            const allTasks = await getAllTasks();
+            const userId = auth.currentUser?.uid;
+            setTasks(allTasks.filter(task => task.user === userId));
+        };
+
+        window.addEventListener("online", syncAndReload);
+
+        return () => {
+            window.removeEventListener("online", syncAndReload);
+        };
+    }, []);
+
+    const handleAddTask = async (e) => {
         e.preventDefault();
         if (!title || !time) return;
-        setTasks([
-            ...tasks,
-            { title, time, urgency, id: Date.now() }
-        ]);
+        const newTask = {
+            id: Date.now().toString(),
+            title,
+            time,
+            urgency,
+            completed: false,
+            deleted: false,
+            user: auth.currentUser?.uid,
+        };
+        await saveTask(newTask);
         setTitle("");
         setTime("");
         setUrgency("normal");
+        const allTasks = await getAllTasks();
+        const userId = auth.currentUser?.uid;
+        setTasks(allTasks.filter(task => task.user === userId));
+    };
+
+    const handleCompleteTask = async (task) => {
+        const updatedTask = { ...task, completed: true, pendingSync: !navigator.onLine };
+        await saveTask(updatedTask);
+        const allTasks = await getAllTasks();
+        const userId = auth.currentUser?.uid;
+        setTasks(allTasks.filter(task => task.user === userId));
+    };
+
+    const handleDeleteTask = async (task) => {
+        const updatedTask = { ...task, deleted: true, pendingSync: !navigator.onLine };
+        await saveTask(updatedTask);
+        const allTasks = await getAllTasks();
+        const userId = auth.currentUser?.uid;
+        setTasks(allTasks.filter(task => task.user === userId));
     };
 
     const handleLogout = async () => {
-        await signOut(auth);
+        await logout();
         if (onLogout) onLogout();
     };
 
     return (
         <div className="login-container">
-            <button
-                style={{
-                    alignSelf: 'flex-end',
-                    marginBottom: 12,
-                    background: '#fff',
-                    color: '#1976d2',
-                    border: '1.5px solid #1976d2',
-                    borderRadius: 8,
-                    fontWeight: 700,
-                    fontSize: 16,
-                    padding: '0.5rem 1.2rem',
-                    cursor: 'pointer',
-                    transition: 'background 0.2s, color 0.2s'
-                }}
-                onClick={handleLogout}
-            >
-                Logout
-            </button>
+            <div style={{ display: "flex", justifyContent: "space-between", width: "100%", maxWidth: 400 }}>
+                <button className="logout-btn" onClick={handleLogout}>Logout</button>
+                <button className="logout-btn" onClick={onGoToProfile}>Perfil</button>
+            </div>
             <h2>Minhas Tarefas</h2>
             <form className="login-form" onSubmit={handleAddTask}>
                 <input
@@ -80,18 +103,33 @@ function Home({ onLogout }) {
                 </select>
                 <button type="submit">Adicionar Tarefa</button>
             </form>
-            <ul style={{ width: "100%", marginTop: 24 }}>
+            <ul className="task-list">
                 {tasks.map(task => (
-                    <li key={task.id} style={{
-                        background: "#f5f5f5",
-                        borderRadius: 6,
-                        padding: 12,
-                        marginBottom: 10,
-                        borderLeft: `6px solid ${task.urgency === 'alta' ? '#d32f2f' : task.urgency === 'normal' ? '#fbc02d' : '#388e3c'}`
-                    }}>
+                    <li key={task.id} className={`task-item ${task.urgency}`}>
                         <strong>{task.title}</strong> <br />
                         Horário: {task.time} <br />
-                        Urgência: <span style={{ color: task.urgency === 'alta' ? '#d32f2f' : task.urgency === 'normal' ? '#fbc02d' : '#388e3c' }}>{task.urgency}</span>
+                        Urgência: <span>{task.urgency}</span>
+                        {task.completed ? (
+                            <span style={{ color: "green", marginLeft: 8 }}>Concluída</span>
+                        ) : task.deleted ? (
+                            <span style={{ color: "#d32f2f", marginLeft: 8 }}>Apagada</span>
+                        ) : (
+                            <>
+                                <button
+                                    style={{ marginLeft: 8 }}
+                                    onClick={() => handleCompleteTask(task)}
+                                >
+                                    Concluir
+                                </button>
+                                <button
+                                    style={{ marginLeft: 8, color: "red" }}
+                                    onClick={() => handleDeleteTask(task)}
+                                >
+                                    Deletar
+                                </button>
+                            </>
+                        )}
+                        {task.pendingSync && <span style={{ color: "red", marginLeft: 8 }}>Offline</span>}
                     </li>
                 ))}
             </ul>
