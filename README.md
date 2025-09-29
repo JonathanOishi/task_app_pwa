@@ -24,6 +24,5 @@ Este é um aplicativo de tarefas moderno, feito com React + Vite e integrado ao 
    npm run dev
    ```
 
-<img src="https://i.ibb.co/hFGPHvGC/demo.png" alt="Task App PWA Demo" style="max-width:120px; width:100%; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.08); margin:16px auto; display:block;" />
 
 
