@@ -81,13 +81,13 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 ## 📱 Screenshots
 
 ### Tela de Login
-<img src="https://ibb.co/Vnm1Zcj" alt="Tela de Login" width="400"/>
+<img src="https://postimg.cc/R64x3d8Y][img]https://i.postimg.cc/R64x3d8Y/login.jpg" alt="Tela de Login" width="400"/>
 
 ### Página Principal - Lista de Tarefas
-<img src="https://ibb.co/9mWNSd5" alt="Lista de Tarefas" width="400"/>
+<img src="https://postimg.cc/WFTcD8Kx][img]https://i.postimg.cc/WFTcD8Kx/home.jpg" alt="Lista de Tarefas" width="400"/>
 
 ### Perfil do Usuário
-<img src="https://ibb.co/5xwmXJx" alt="Perfil do Usuário" width="400"/>
+<img src="https://postimg.cc/8JNgF43n][img]https://i.postimg.cc/8JNgF43n/dashboard.jpg" alt="Perfil do Usuário" width="400"/>
 
 ⭐ Se este projeto te ajudou, considere dar uma estrela!
 
