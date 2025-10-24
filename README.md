@@ -78,16 +78,11 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 **Jonathan Oishi**
 - GitHub: [@JonathanOishi](https://github.com/JonathanOishi)
 
-## 📱 Screenshots
+📱 Screenshots
 
-### Tela de Login
-<img src="https://freeimage.host/i/Kg0TMyg" alt="Tela de Login" width="400"/>
 
-### Página Principal - Lista de Tarefas
-<img src="https://freeimage.host/i/Kg0TG8F" alt="Lista de Tarefas" width="400"/>
+<img src="https://iili.io/Kg0TMyg.jpg" alt="Tela de Login" width="300"/> <img src="https://iili.io/Kg0TG8F.jpg" alt="Lista de Tarefas" width="300"/> <img src="https://iili.io/Kg0TEa1.jpg" alt="Perfil do Usuário" width="300"/> 
 
-### Perfil do Usuário
-<img src="https://freeimage.host/i/Kg0TEa1" alt="Perfil do Usuário" width="400"/>
 
 ⭐ Se este projeto te ajudou, considere dar uma estrela!
 
