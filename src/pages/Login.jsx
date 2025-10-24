@@ -15,40 +15,57 @@ function Login() {
         setError("");
         try {
             await signInWithEmailAndPassword(auth, email, password);
-            navigate("/"); // Vai para Home após login
+            navigate("/");
         } catch (err) {
             setError("E-mail ou senha inválidos.");
         }
     };
 
     return (
-        <div className="login-container">
-            <h2>Login</h2>
+        <div className="login-container slide-up">
+            <h2>🔐 Entrar</h2>
             <form onSubmit={handleSubmit} className="login-form">
-                <input
-                    type="email"
-                    placeholder="E-mail"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <input
-                    type="password"
-                    placeholder="Senha"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                <button type="submit">Entrar</button>
-                {error && <p className="error">{error}</p>}
+                <div className="form-group">
+                    <input
+                        type="email"
+                        placeholder="📧 Digite seu e-mail..."
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        className="form-input"
+                    />
+                </div>
+                <div className="form-group">
+                    <input
+                        type="password"
+                        placeholder="🔒 Digite sua senha..."
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        className="form-input"
+                    />
+                </div>
+                <button type="submit" className="btn-primary">
+                    🚀 Entrar
+                </button>
+                {error && <div className="alert alert-danger">{error}</div>}
             </form>
-            <p style={{ marginTop: 16, textAlign: 'center' }}>
+            <p style={{ marginTop: 'var(--spacing-lg)', textAlign: 'center', color: 'var(--text-secondary)' }}>
                 Não tem uma conta?{' '}
                 <span
-                    style={{ color: '#646cff', cursor: 'pointer', textDecoration: 'underline' }}
+                    style={{
+                        color: 'var(--primary-blue)',
+                        cursor: 'pointer',
+                        fontWeight: 600,
+                        padding: 'var(--spacing-xs) var(--spacing-sm)',
+                        borderRadius: 'var(--border-radius-sm)',
+                        transition: 'all 0.2s ease'
+                    }}
                     onClick={() => navigate("/register")}
+                    onMouseOver={(e) => e.target.style.background = 'rgb(37 99 235 / 0.1)'}
+                    onMouseOut={(e) => e.target.style.background = 'transparent'}
                 >
-                    Criar conta
+                    ✨ Criar conta
                 </span>
             </p>
         </div>

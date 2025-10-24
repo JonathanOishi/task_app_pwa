@@ -1,0 +1,326 @@
+/* Tema escuro */
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* Cores principais - tema escuro */
+        --primary-blue: #60a5fa;
+        --primary-blue-dark: #3b82f6;
+        --primary-blue-light: #93c5fd;
+        --secondary-purple: #a78bfa;
+        --secondary-purple-dark: #8b5cf6;
+
+        /* Cores de fundo - tema escuro */
+        --bg-primary: #0f172a;
+        --bg-secondary: #1e293b;
+        --bg-card: #1e293b;
+        --bg-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+
+        /* Cores de texto - tema escuro */
+        --text-primary: #f1f5f9;
+        --text-secondary: #cbd5e1;
+        --text-muted: #64748b;
+        --text-white: #ffffff;
+
+        /* Cores de estado - tema escuro */
+        --success: #34d399;
+        --warning: #fbbf24;
+        --error: #f87171;
+        --info: #60a5fa;
+
+        /* Bordas - tema escuro */
+        --border-color: #334155;
+
+        /* Sombras - tema escuro */
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+        --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.3);
+    }
+
+    /* Ajustes específicos para o tema escuro */
+    .login-form input,
+    .form-input {
+        background: var(--bg-secondary);
+        border-color: var(--border-color);
+        color: var(--text-primary);
+    }
+
+    .login-form input:focus,
+    .form-input:focus {
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 4px rgb(96 165 250 / 0.2);
+    }
+
+    .task-item {
+        background: var(--bg-secondary);
+        border-color: var(--border-color);
+    }
+
+    .task-item:hover {
+        background: #2d3748;
+    }
+
+    /* Scrollbar tema escuro */
+    ::-webkit-scrollbar {
+        background: var(--bg-primary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--text-muted);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--text-secondary);
+    }
+}
+
+/* Tema claro aprimorado */
+@media (prefers-color-scheme: light) {
+
+    /* Cores específicas para alto contraste no tema claro */
+    :root {
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --border-color: #e2e8f0;
+    }
+
+    /* Melhorias de contraste para acessibilidade */
+    .login-form input:focus,
+    .form-input:focus {
+        box-shadow: 0 0 0 4px rgb(37 99 235 / 0.15);
+    }
+
+    .task-item:hover {
+        background: #f8fafc;
+    }
+}
+
+/* Tema de alto contraste para acessibilidade */
+@media (prefers-contrast: high) {
+    :root {
+        --primary-blue: #1e40af;
+        --primary-blue-dark: #1e3a8a;
+        --text-primary: #000000;
+        --text-secondary: #1f2937;
+        --border-color: #4b5563;
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    }
+
+    .login-form input,
+    .form-input {
+        border-width: 3px;
+    }
+
+    .login-form input:focus,
+    .form-input:focus {
+        border-width: 3px;
+        box-shadow: 0 0 0 3px rgb(37 99 235 / 0.3);
+    }
+
+    button {
+        border-width: 2px;
+        font-weight: 700;
+    }
+
+    .task-item {
+        border-width: 3px;
+    }
+}
+
+/* Animações reduzidas para usuários que preferem menos movimento */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Melhorias para telas pequenas */
+@media (max-width: 640px) {
+    :root {
+        --spacing-xs: 0.125rem;
+        --spacing-sm: 0.25rem;
+        --spacing-md: 0.75rem;
+        --spacing-lg: 1rem;
+        --spacing-xl: 1.25rem;
+        --spacing-2xl: 2rem;
+    }
+
+    .login-container {
+        padding: var(--spacing-lg);
+        margin: var(--spacing-sm);
+    }
+
+    .login-form input,
+    .form-input {
+        font-size: 16px;
+        /* Previne zoom no iOS */
+        padding: var(--spacing-md);
+    }
+
+    button {
+        min-height: 48px;
+        /* Tamanho mínimo para touch */
+        font-size: 1rem;
+    }
+}
+
+/* Melhorias para telas grandes */
+@media (min-width: 1200px) {
+    .login-container {
+        max-width: 480px;
+    }
+
+    .task-list {
+        max-height: 500px;
+    }
+}
+
+/* Tema para impressão */
+@media print {
+    :root {
+        --bg-primary: white;
+        --bg-secondary: white;
+        --bg-card: white;
+        --text-primary: black;
+        --text-secondary: #333333;
+        --border-color: #cccccc;
+    }
+
+    .login-container,
+    .task-item {
+        box-shadow: none;
+        border: 1px solid var(--border-color);
+    }
+
+    button {
+        display: none;
+    }
+
+    .task-item::before {
+        background: #666666 !important;
+    }
+}
+
+/* Suporte para dispositivos com pouca largura */
+@media (max-width: 375px) {
+    .login-container {
+        max-width: calc(100vw - 1rem);
+        padding: var(--spacing-md);
+    }
+
+    .nav-buttons {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .logout-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Melhorias para orientação landscape em dispositivos móveis */
+@media (orientation: landscape) and (max-height: 500px) {
+    .login-container {
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: var(--spacing-md);
+    }
+
+    .task-list {
+        max-height: 200px;
+    }
+}
+
+/* Tema para dispositivos com hover limitado (touch) */
+@media (hover: none) {
+
+    button:hover,
+    .task-item:hover,
+    .card:hover {
+        transform: none;
+    }
+
+    button:active,
+    .task-item:active {
+        transform: scale(0.98);
+    }
+}
+
+/* Estados de foco melhorados para navegação por teclado */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+a:focus-visible {
+    outline: 3px solid var(--primary-blue);
+    outline-offset: 2px;
+    border-radius: var(--border-radius-sm);
+}
+
+/* Indicadores visuais para elementos interativos */
+button,
+select,
+input,
+a {
+    cursor: pointer;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="time"],
+textarea {
+    cursor: text;
+}
+
+/* Estilo para elementos disabled */
+button:disabled,
+input:disabled,
+select:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(1);
+}
+
+/* Animação de carregamento melhorada */
+.loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+}
+
+.loading-text {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Feedback visual para ações */
+.success-feedback {
+    background: var(--success);
+    color: white;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    position: fixed;
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+    z-index: 1000;
+    animation: slideInFromRight 0.3s ease;
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

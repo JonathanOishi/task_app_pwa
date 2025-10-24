@@ -23,7 +23,6 @@ if (typeof window !== "undefined") {
 }
 export { app, db, analytics };
 
-// Autenticação
 export async function login(email, password) {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     if (analytics) {
@@ -49,7 +48,6 @@ export async function logout() {
     if (analytics) logEvent(analytics, "logout");
 }
 
-// Tarefas
 export async function addTaskToFirebase(task) {
     await setDoc(doc(db, "tasks", task.id), task);
     if (analytics) logEvent(analytics, "add_task", { urgency: task.urgency });

@@ -14,40 +14,59 @@ function Register() {
         setError("");
         try {
             await register(email, password);
-            navigate("/"); // Vai para Home após cadastro
+            navigate("/");
         } catch (err) {
             setError("Erro ao criar conta.");
         }
     };
 
     return (
-        <div className="login-container">
-            <h2>Cadastro</h2>
+        <div className="login-container slide-up">
+            <h2>👤 Criar Conta</h2>
             <form onSubmit={handleSubmit} className="login-form">
-                <input
-                    type="email"
-                    placeholder="E-mail"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <input
-                    type="password"
-                    placeholder="Senha"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                <button type="submit">Criar Conta</button>
-                {error && <p className="error">{error}</p>}
+                <div className="form-group">
+                    <input
+                        type="email"
+                        placeholder="📧 Digite seu e-mail..."
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        className="form-input"
+                    />
+                </div>
+                <div className="form-group">
+                    <input
+                        type="password"
+                        placeholder="🔒 Digite sua senha..."
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        className="form-input"
+                        minLength="6"
+                        title="A senha deve ter pelo menos 6 caracteres"
+                    />
+                </div>
+                <button type="submit" className="btn-primary">
+                    ✨ Criar Conta
+                </button>
+                {error && <div className="alert alert-danger">{error}</div>}
             </form>
-            <p style={{ marginTop: 16, textAlign: 'center' }}>
+            <p style={{ marginTop: 'var(--spacing-lg)', textAlign: 'center', color: 'var(--text-secondary)' }}>
                 Já tem uma conta?{' '}
                 <span
-                    style={{ color: '#646cff', cursor: 'pointer', textDecoration: 'underline' }}
+                    style={{
+                        color: 'var(--primary-blue)',
+                        cursor: 'pointer',
+                        fontWeight: 600,
+                        padding: 'var(--spacing-xs) var(--spacing-sm)',
+                        borderRadius: 'var(--border-radius-sm)',
+                        transition: 'all 0.2s ease'
+                    }}
                     onClick={() => navigate("/login")}
+                    onMouseOver={(e) => e.target.style.background = 'rgb(37 99 235 / 0.1)'}
+                    onMouseOut={(e) => e.target.style.background = 'transparent'}
                 >
-                    Fazer login
+                    🚪 Fazer login
                 </span>
             </p>
         </div>

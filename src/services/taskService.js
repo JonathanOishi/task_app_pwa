@@ -1,7 +1,6 @@
 import { addTaskToFirebase, getTasksFromFirebase } from "./firebase";
 import { addTask as addTaskLocal, getTasks as getLocalTasks, initDB } from "./db";
 
-// Salva tarefa, escolhendo o destino conforme conexão
 export async function saveTask(task) {
     if (navigator.onLine) {
         await addTaskToFirebase(task);
@@ -10,7 +9,6 @@ export async function saveTask(task) {
     }
 }
 
-// Busca todas as tarefas (Firebase se online, local se offline)
 export async function getAllTasks() {
     if (navigator.onLine) {
         return await getTasksFromFirebase();
@@ -19,7 +17,6 @@ export async function getAllTasks() {
     }
 }
 
-// Sincroniza tarefas pendentes do IndexedDB para Firebase
 export async function syncTasks() {
     if (navigator.onLine) {
         const tasks = await getLocalTasks();
@@ -27,7 +24,6 @@ export async function syncTasks() {
         for (const task of pending) {
             await addTaskToFirebase(task);
         }
-        // Limpa tarefas pendentes do IndexedDB
         const db = await initDB();
         for (const task of pending) {
             await db.delete('tasks', task.id);
@@ -35,7 +31,6 @@ export async function syncTasks() {
     }
 }
 
-// Sincroniza automaticamente ao voltar online
 window.addEventListener('online', () => {
     syncTasks();
 });

@@ -76,63 +76,144 @@ function Home({ onLogout, onGoToProfile }) {
     };
 
     return (
-        <div className="login-container">
-            <div style={{ display: "flex", justifyContent: "space-between", width: "100%", maxWidth: 400 }}>
-                <button className="logout-btn" onClick={handleLogout}>Logout</button>
-                <button className="logout-btn" onClick={onGoToProfile}>Perfil</button>
+        <div className="login-container slide-up">
+            <div className="nav-buttons">
+                <button className="logout-btn" onClick={handleLogout}>
+                    🚪 Logout
+                </button>
+                <button className="logout-btn" onClick={onGoToProfile}>
+                    👤 Perfil
+                </button>
             </div>
-            <h2>Minhas Tarefas</h2>
+
+            <h2>📝 Minhas Tarefas</h2>
+
+            {/* Estatísticas das tarefas */}
+            <div className="task-stats">
+                <div className="stat-item">
+                    <span className="stat-number">{tasks.filter(t => !t.completed && !t.deleted).length}</span>
+                    <span className="stat-label">Pendentes</span>
+                </div>
+                <div className="stat-item">
+                    <span className="stat-number">{tasks.filter(t => t.completed).length}</span>
+                    <span className="stat-label">Concluídas</span>
+                </div>
+                <div className="stat-item">
+                    <span className="stat-number">{tasks.filter(t => t.urgency === 'alta' && !t.completed && !t.deleted).length}</span>
+                    <span className="stat-label">Urgentes</span>
+                </div>
+            </div>
+
             <form className="login-form" onSubmit={handleAddTask}>
-                <input
-                    type="text"
-                    placeholder="Título da tarefa"
-                    value={title}
-                    onChange={e => setTitle(e.target.value)}
-                    required
-                />
-                <input
-                    type="time"
-                    value={time}
-                    onChange={e => setTime(e.target.value)}
-                    required
-                />
-                <select value={urgency} onChange={e => setUrgency(e.target.value)}>
-                    <option value="baixa">Baixa</option>
-                    <option value="normal">Normal</option>
-                    <option value="alta">Alta</option>
-                </select>
-                <button type="submit">Adicionar Tarefa</button>
+                <div className="form-group">
+                    <input
+                        type="text"
+                        placeholder="📋 Digite o título da tarefa..."
+                        value={title}
+                        onChange={e => setTitle(e.target.value)}
+                        required
+                        className="form-input"
+                    />
+                </div>
+
+                <div className="form-group">
+                    <input
+                        type="time"
+                        value={time}
+                        onChange={e => setTime(e.target.value)}
+                        required
+                        className="form-input"
+                        title="Horário da tarefa"
+                    />
+                </div>
+
+                <div className="form-group">
+                    <select
+                        value={urgency}
+                        onChange={e => setUrgency(e.target.value)}
+                        className="form-input"
+                        title="Nível de urgência"
+                    >
+                        <option value="baixa">🟢 Baixa Prioridade</option>
+                        <option value="normal">🟡 Prioridade Normal</option>
+                        <option value="alta">🔴 Alta Prioridade</option>
+                    </select>
+                </div>
+
+                <button type="submit" className="btn-primary">
+                    ➕ Adicionar Tarefa
+                </button>
             </form>
-            <ul className="task-list">
-                {tasks.map(task => (
-                    <li key={task.id} className={`task-item ${task.urgency}`}>
-                        <strong>{task.title}</strong> <br />
-                        Horário: {task.time} <br />
-                        Urgência: <span>{task.urgency}</span>
-                        {task.completed ? (
-                            <span style={{ color: "green", marginLeft: 8 }}>Concluída</span>
-                        ) : task.deleted ? (
-                            <span style={{ color: "#d32f2f", marginLeft: 8 }}>Apagada</span>
-                        ) : (
-                            <>
-                                <button
-                                    style={{ marginLeft: 8 }}
-                                    onClick={() => handleCompleteTask(task)}
-                                >
-                                    Concluir
-                                </button>
-                                <button
-                                    style={{ marginLeft: 8, color: "red" }}
-                                    onClick={() => handleDeleteTask(task)}
-                                >
-                                    Deletar
-                                </button>
-                            </>
+
+            {tasks.length > 0 && (
+                <div className="task-container">
+                    <div className="task-header">
+                        <h3>📋 Lista de Tarefas</h3>
+                        {!navigator.onLine && (
+                            <span className="offline-indicator">📡 Offline</span>
                         )}
-                        {task.pendingSync && <span style={{ color: "red", marginLeft: 8 }}>Offline</span>}
-                    </li>
-                ))}
-            </ul>
+                    </div>
+
+                    <ul className="task-list">
+                        {tasks.map(task => (
+                            <li key={task.id} className={`task-item ${task.urgency} slide-up`}>
+                                <div>
+                                    <strong>{task.title}</strong>
+                                    <br />
+                                    <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                                        🕐 Horário: {task.time}
+                                    </span>
+                                    <br />
+                                    <span style={{ marginTop: 'var(--spacing-sm)', display: 'inline-block' }}>
+                                        Urgência: <span className={`badge badge-${task.urgency === 'alta' ? 'danger' : task.urgency === 'normal' ? 'warning' : 'success'} ${task.urgency}`}>
+                                            {task.urgency === 'alta' ? '🔴 Alta' : task.urgency === 'normal' ? '🟡 Normal' : '🟢 Baixa'}
+                                        </span>
+                                    </span>
+                                </div>
+
+                                <div style={{ marginTop: 'var(--spacing-md)' }}>
+                                    {task.completed ? (
+                                        <span className="badge badge-success">✅ Concluída</span>
+                                    ) : task.deleted ? (
+                                        <span className="badge badge-danger">🗑️ Apagada</span>
+                                    ) : (
+                                        <div style={{ display: 'flex', gap: 'var(--spacing-sm)', flexWrap: 'wrap' }}>
+                                            <button
+                                                className="btn-success btn-small"
+                                                onClick={() => handleCompleteTask(task)}
+                                                title="Marcar como concluída"
+                                            >
+                                                ✅ Concluir
+                                            </button>
+                                            <button
+                                                className="btn-danger btn-small"
+                                                onClick={() => handleDeleteTask(task)}
+                                                title="Deletar tarefa"
+                                            >
+                                                🗑️ Deletar
+                                            </button>
+                                        </div>
+                                    )}
+                                    {task.pendingSync && (
+                                        <span className="offline-indicator" style={{ marginLeft: 'var(--spacing-sm)' }}>
+                                            📡 Pendente sync
+                                        </span>
+                                    )}
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+
+            {tasks.length === 0 && (
+                <div className="card" style={{ textAlign: 'center', marginTop: 'var(--spacing-xl)' }}>
+                    <h3>🎯 Nenhuma tarefa ainda</h3>
+                    <p style={{ color: 'var(--text-secondary)' }}>
+                        Comece adicionando sua primeira tarefa usando o formulário acima!
+                    </p>
+                </div>
+            )}
         </div>
     );
 }
